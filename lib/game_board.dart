@@ -17,6 +17,8 @@ class _GameBoardState extends State<GameBoard> {
   int selectedRow = -1;
   int selectedCol = -1;
 
+  List<List<int>> validMoves = [];
+
   @override
   void initState() {
     super.initState();
@@ -115,7 +117,31 @@ class _GameBoardState extends State<GameBoard> {
         selectedRow = row;
         selectedCol = col;
       }
+
+      validMoves = calculateRawValidMoves(row, col, selectedPiece);
     });
+  }
+
+  List<List<int>> calculateRawValidMoves(int row, int col, ChessPiece? piece) {
+    List<List<int>> candidatesMoves = [];
+
+    int direction = piece!.isWhite ? -1 : 1;
+
+    switch (piece.type) {
+      case ChessPieceType.pawn:
+        break;
+      case ChessPieceType.tower:
+        break;
+      case ChessPieceType.knight:
+        break;
+      case ChessPieceType.bishop:
+        break;
+      case ChessPieceType.queen:
+        break;
+      case ChessPieceType.king:
+        break;
+      default:
+    }
   }
 
   @override
