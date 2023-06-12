@@ -129,6 +129,27 @@ class _GameBoardState extends State<GameBoard> {
 
     switch (piece.type) {
       case ChessPieceType.pawn:
+        if (isInBoard(row + direction, col) &&
+            board[row + direction][col] == null) {
+          candidatesMoves.add([row + direction, col]);
+        }
+        if ((row == 1 && !piece.isWhite) || (row == 6 && piece.isWhite)) {
+          if (isInBoard(row + 2 * direction, col) &&
+              board[row + 2 * direction][col] == null &&
+              board[row + direction][col] == null) {
+            candidatesMoves.add([row + 2 * direction, col]);
+          }
+        }
+        if (isInBoard(row + direction, col - 1) &&
+            board[row + direction][col - 1] != null &&
+            board[row + direction][col - 1]!.isWhite) {
+          candidatesMoves.add([row + direction, col - 1]);
+        }
+        if (isInBoard(row + direction, col + 1) &&
+            board[row + direction][col + 1] != null &&
+            board[row + direction][col + 1]!.isWhite) {
+          candidatesMoves.add([row + direction, col + 1]);
+        }
         break;
       case ChessPieceType.tower:
         break;
@@ -142,6 +163,7 @@ class _GameBoardState extends State<GameBoard> {
         break;
       default:
     }
+    return candidatesMoves;
   }
 
   @override
@@ -159,11 +181,20 @@ class _GameBoardState extends State<GameBoard> {
 
           bool isSelected = selectedRow == row && selectedCol == col;
 
+          bool isValidMove = false;
+
+          for (var position in validMoves) {
+            if (position[0] == row && position[1] == col) {
+              isValidMove = true;
+            }
+          }
+
           return Square(
             onTap: () => pieceSelected(row, col),
             isWhite: isWhite(index),
             piece: board[row][col],
             isSelected: isSelected,
+            isValidMoves: isValidMove,
           );
         },
       ),
